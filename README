@@ -1,0 +1,88 @@
+🎯 Hệ Thống Gợi Ý Sản Phẩm
+Ứng dụng này sử dụng các thuật toán Collaborative Filtering và Content-Based Filtering để gợi ý sản phẩm cho người dùng dựa trên hành vi, sở thích, và nội dung sản phẩm. Ngoài ra, hệ thống còn hỗ trợ tìm kiếm theo từ khóa và xem chi tiết sản phẩm.
+
+🚀 Tính Năng Chính
+👤 Gợi ý sản phẩm cho người dùng (Collaborative Filtering)
+
+📦 Gợi ý sản phẩm liên quan khi chọn sản phẩm (Content-Based Filtering)
+
+🔍 Tìm kiếm sản phẩm theo từ khóa
+
+🛒 Hiển thị chi tiết sản phẩm với ảnh và mô tả
+
+🎨 Giao diện đẹp, dễ sử dụng với Streamlit + CSS tuỳ chỉnh
+
+🧠 Phương Thức Gợi Ý
+Phương thức	Mô tả
+🔗 Gợi ý theo người dùng	Đề xuất sản phẩm dựa vào hành vi mua sắm của người dùng tương tự
+📦 Gợi ý theo sản phẩm	Hiển thị các sản phẩm có nội dung tương đồng với sản phẩm được chọn
+🔍 Tìm kiếm sản phẩm	Tìm kiếm sản phẩm theo từ khóa nhập vào
+⚙️ Cài Đặt & Chạy Ứng Dụng
+🔧 Yêu Cầu
+Python 3.8+
+
+Streamlit 1.0+
+
+Thư viện cần thiết:
+
+bash
+Copy
+Edit
+pandas
+scikit-learn
+numpy
+streamlit
+🛠️ Cài Đặt
+Cài đặt thư viện:
+
+bash
+Copy
+Edit
+pip install -r requirements.txt
+Chạy ứng dụng:
+
+bash
+Copy
+Edit
+streamlit run app.py
+📂 Cấu Trúc Dự Án
+less
+Copy
+Edit
+├── app.py                         # File chính chạy Streamlit
+├── lib/
+│   └── mylib.py                  # Các hàm hỗ trợ: load dữ liệu, render sản phẩm, gợi ý,...
+├── data/
+│   ├── products_df.csv           # Danh sách sản phẩm
+│   └── recommendations_by_user.csv  # Dữ liệu gợi ý theo người dùng
+├── css/
+│   ├── style/
+│       ├── card.css
+│       ├── detail.css
+│       └── header.css
+├── images/
+│   └── No_Image_Available.jpg    # Ảnh mặc định
+├── requirements.txt              # Danh sách thư viện cần cài đặt
+└── README.md                     # Tài liệu hướng dẫn
+🧩 Một Số Hàm Quan Trọng
+Hàm	Mô tả
+load_csv_file(file_path)	Tải dữ liệu từ file CSV
+render_detail_product(...)	Hiển thị chi tiết sản phẩm
+get_similar_products(...)	Lấy danh sách sản phẩm tương tự
+recommend_products_by_search(...)	Gợi ý sản phẩm theo từ khóa tìm kiếm
+💡 Gợi Ý Mở Rộng
+Thêm hệ thống đánh giá, phản hồi người dùng
+
+Sử dụng mô hình học máy hoặc deep learning để cải thiện gợi ý
+
+Tích hợp gợi ý theo thời gian (gợi ý theo mùa, sự kiện, lịch sử mua hàng)
+
+🤝 Đóng Góp
+Mọi đóng góp đều được hoan nghênh!
+
+Tạo issue nếu bạn gặp lỗi
+
+Gửi pull request nếu bạn có ý tưởng hoặc cải tiến mã
+
+📬 Liên Hệ
+Bạn có thể liên hệ qua email hoặc GitHub để thảo luận thêm về dự án.
