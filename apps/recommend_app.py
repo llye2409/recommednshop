@@ -111,9 +111,11 @@ def recommend_app(products_df, recommendations_df, user_ids, vectorizer, tfidf_m
             results = recommend_products_by_search(search_query, products_df, vectorizer, tfidf_matrix)
             if not results.empty:
                 render_scrollable_products_html(results, placeholder_image)
+                # thêm sort result nếu có
             else:
                 st.warning("Không tìm thấy sản phẩm phù hợp.")
-            return
+        
+
         if selected_product_id:
             left_col, right_col = st.columns([1, 2])
             with left_col:

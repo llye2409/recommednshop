@@ -192,6 +192,30 @@ def recommend_products_by_search(query, products_df, vectorizer, tfidf_matrix, t
 
     return results_df
 
+def sort_results():
+    sort_choice = st.selectbox(
+        "Sắp xếp theo",
+        ["Độ phù hợp", "Giá thấp", "Giá cao", "Đánh giá cao"],
+        index=0
+    )
+
+    results = st.session_state["search_results"].copy()
+    sort_map = {
+        "Độ phù hợp": None,
+        "Đánh giá cao": ("rating", False),
+        "Giá thấp": ("price", True),
+        "Giá cao": ("price", False)
+    }
+
+    if sort_choice in sort_map and sort_map[sort_choice]:
+        sort_by, ascending = sort_map[sort_choice]
+        if sort_by in results.columns:
+            results = results.sort_values(sort_by, ascending=ascending)
+
+    return results
+
+
+
 def recommend_personalized_by_search(query, products_df, vectorizer, tfidf_matrix, user_recs, top_n=10):
     # Search for products based on the query
     search_results = recommend_products_by_search(query, products_df, vectorizer, tfidf_matrix, top_n=50)
