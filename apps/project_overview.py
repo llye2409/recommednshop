@@ -39,7 +39,7 @@ def Project_Overview():
     - **Data Processing**: Pandas, PySpark  
     - **Modeling**: scikit-learn, Gensim, SurPRISE  
     - **Vietnamese NLP**: underthesea  
-    - **Main Algorithms**: TF-IDF, Cosine Similarity, ALS (Alternating Least Squares)
+    - **Main Algorithms**: TF-IDF, Cosine Similarity, Surprise SVD
     """)
 
     st.subheader("🔄 Project Workflow")
