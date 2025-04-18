@@ -1,0 +1,32 @@
+.custom-header {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.custom-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #222;
+    font-weight: normal;
+}
+
+.stTextInput>div>div>input {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.95rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.stButton>button {
+    padding: 0.4rem 0.8rem;
+    background: none;
+    border: 1px solid #666;
+    color: #333;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+.stButton>button:hover {
+    background-color: #f2f2f2;
+}

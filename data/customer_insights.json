@@ -1,0 +1,180 @@
+{
+  "Summary": {
+    "Products": 35532,
+    "Users": 650155,
+    "Ratings": 841455,
+    "Rated_Products": 30660,
+    "Note": "Nearly 100% of products have at least one rating, indicating good review coverage."
+  },
+  "Most_Rated_Products": [
+    {
+      "product_id": 4851,
+      "product_name": "Combo 10 Đôi tất viền cổ Vicero chống mùi kháng khuẩn - Freesize",
+      "num_rating": 364
+    },
+    {
+      "product_id": 512,
+      "product_name": "Hộp 10 đôi tất chống hôi chân hàng xuất Nhật ( Hàng Xịn Đẹp) BT01",
+      "num_rating": 349
+    },
+    {
+      "product_id": 6460,
+      "product_name": "(BÁN K LỢI NHUÂN ) Bộ Nỉ Nam Chất Liệu Cao Cấp mặc là ấm áp",
+      "num_rating": 321
+    },
+    {
+      "product_id": 738,
+      "product_name": "Bộ Quần Áo Nam Tay Ngắn Cổ Bẻ Áo Khuy Cài Quần Short Có Túi Kiểu Dáng Trẻ Trung Thời Trang Zenkonu QA NAM 1000071V1",
+      "num_rating": 292
+    },
+    {
+      "product_id": 515,
+      "product_name": "Combo 2 Đôi Tất Trơn Chống Thối Kháng Khuẩn VICERO",
+      "num_rating": 290
+    },
+    {
+      "product_id": 49,
+      "product_name": "Tất ngắn nam Vớ thấp cổ 4 màu trơn chống hôi chân",
+      "num_rating": 287
+    },
+    {
+      "product_id": 6587,
+      "product_name": "Bộ Nỉ Nam Thu Đông - Bộ Thể Thao Nam BDD",
+      "num_rating": 284
+    },
+    {
+      "product_id": 73,
+      "product_name": "Bộ Quần Áo Mặc Nhà Thể Thao Nam Mùa Hè Phong Cách Cao Cấp ZERO",
+      "num_rating": 281
+    },
+    {
+      "product_id": 1672,
+      "product_name": "Mũ Lưỡi Trai Phản Quang LINJW Dành Cho Nam Và Nữ Phong Cách Ulzzang Mu01",
+      "num_rating": 276
+    },
+    {
+      "product_id": 693,
+      "product_name": "ĐỒ BỘ NAM 🚚 FREESHIP 🚚 ĐỒ BỘ THỂ THAO IN HÌNH CON MÈO ĐEO MẮT KÍNH SIÊU NGẦU",
+      "num_rating": 276
+    }
+  ],
+  "Top_Rated_Products": [
+    {
+      "product_id": 0,
+      "product_name": "Kính mát phân cực gọng tròn bằng kim loại nhiều màu chống tia UV cho nam và nữ",
+      "rating_score": 5,
+      "num_rating": 61
+    },
+    {
+      "product_id": 1,
+      "product_name": "Tất Nam xuất Khẩu Danino - Khuyến Mại",
+      "rating_score": 5,
+      "num_rating": 71
+    },
+    {
+      "product_id": 2,
+      "product_name": "Bộ thể thao nam Mantoni chất vải thun lạnh co giãn 4 chiều, Đồ bộ nam cực kì thoáng mát, năng động(BH3S)",
+      "rating_score": 5,
+      "num_rating": 68
+    },
+    {
+      "product_id": 3,
+      "product_name": "Tất cổ cao nam nữ METAT, vớ cao cổ len lông cừu họa tiết Noel xinh xắn cao cấp thời trang Hàn Quốc T24",
+      "rating_score": 5,
+      "num_rating": 63
+    },
+    {
+      "product_id": 4,
+      "product_name": "Bộ Thể Thao Nam Có Cổ Phối Màu Thời Trang Cao Cấp AVIANO",
+      "rating_score": 5,
+      "num_rating": 77
+    },
+    {
+      "product_id": 5,
+      "product_name": "Bộ Thể Thao cổ tròn nam vải trơn, chất thun co dãn 4 chiều vải lạnh,siêu mềm mịn khô thoáng",
+      "rating_score": 5,
+      "num_rating": 59
+    },
+    {
+      "product_id": 6,
+      "product_name": "Đồ bộ nam, bộ nỉ nam dài tay, bộ thể thao nam thu đông kẻ cánh tay 3 vạch cao cấp MS16",
+      "rating_score": 5,
+      "num_rating": 50
+    },
+    {
+      "product_id": 7,
+      "product_name": "Quần lọt khe viền",
+      "rating_score": 5,
+      "num_rating": 52
+    },
+    {
+      "product_id": 8,
+      "product_name": "MEN DOUBLE LINES - Tất vớ cao cổ nam kẻ hai sọc thể thao, nhập khẩu Hàn Quốc",
+      "rating_score": 5,
+      "num_rating": 53
+    },
+    {
+      "product_id": 9,
+      "product_name": "Set Bộ Áo Sơ Mi Kẻ Xẻ Vạt Sau Quần Shorts Kaki Trắng Mophus",
+      "rating_score": 5,
+      "num_rating": 60
+    }
+  ],
+  "Products_by_Category": [
+    {
+      "category": "Đồ Bộ",
+      "num_products": 4807
+    },
+    {
+      "category": "Trang Phục Truyền Thống",
+      "num_products": 4779
+    },
+    {
+      "category": "Khác",
+      "num_products": 4704
+    },
+    {
+      "category": "Vớ/Tất",
+      "num_products": 4649
+    },
+    {
+      "category": "Đồ Hóa Trang",
+      "num_products": 4625
+    },
+    {
+      "category": "Cà vạt & Nơ cổ",
+      "num_products": 4370
+    },
+    {
+      "category": "Kính Mắt Nam",
+      "num_products": 3916
+    },
+    {
+      "category": "Áo Khoác",
+      "num_products": 427
+    },
+    {
+      "category": "Đồ Lót",
+      "num_products": 401
+    },
+    {
+      "category": "Áo Hoodie, Áo Len & Áo Nỉ",
+      "num_products": 401
+    }
+  ],
+  "Analysis_by_Price_Range": [
+    {
+      "price_range": "giá_thấp",
+      "num_products": 12600
+    },
+    {
+      "price_range": "giá_cao",
+      "num_products": 12034
+    },
+    {
+      "price_range": "giá_trung_bình",
+      "num_products": 10898
+    }
+  ],
+  "Note": "Nearly 100% of products have at least one rating, indicating good review coverage."
+}

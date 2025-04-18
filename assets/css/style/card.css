@@ -1,0 +1,79 @@
+/* style/card.css */
+.stApp {
+    background-color: #f7f7f7;
+}
+
+.card-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 4px;  /* giảm khoảng cách giữa các card */
+}
+
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    padding: 12px;
+    margin: 4px 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+    transform: translateY(-2px);
+}
+
+.card-img img {
+    border-radius: 8px;
+    object-fit: cover;
+    width: 100%;
+    aspect-ratio: 1 / 1; 
+}
+           
+
+.card-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #333;
+    text-align: left;
+    margin: 6px 0;
+}
+
+/* ẨN phần mô tả */
+.card-desc {
+    display: none;
+}
+
+.card-price {
+    font-weight: bold;
+    color: #EE4D2D;
+    text-align: center;
+    margin: 8px 0;
+}
+
+.card-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: auto;
+    display: block;
+}
+
+.card-button:hover {
+    background-color: #45a049;
+}
+
+
+
+

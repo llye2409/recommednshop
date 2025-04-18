@@ -1,0 +1,109 @@
+
+/* style/detail.css */
+
+.sticky-product {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 10px;
+    z-index: 10;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-detail-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    margin-bottom: 32px;
+}
+
+.product-detail-left {
+    flex: 1 1 40%;
+    max-width: 400px;
+}
+
+.product-detail-left img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.1);
+}
+
+.product-detail-right {
+    flex: 1 1 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.product-name {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    line-height: 1.2;
+    color: #222;
+}
+
+.product-rating {
+    color: #ffb703;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+.product-price {
+    font-size: 1.6rem;
+    color: #EE4D2D;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.product-category {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.buy-button {
+    background-color: #EE4D2D;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: fit-content;
+    transition: background-color 0.3s ease;
+}
+
+.buy-button:hover {
+    background-color: #EE4D2D;
+}
+
+.product-description-section {
+    background-color: #fff;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.product-description-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.product-description-content {
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.7;
+}
