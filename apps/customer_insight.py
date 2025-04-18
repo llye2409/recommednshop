@@ -64,7 +64,7 @@ def generate_insights():
     st.info("🎯 The distribution leans toward **high ratings (4–5 stars)**, indicating positive user experiences.")
 
     # 6. Products by Category
-    st.subheader("5️⃣ Products by Category")
+    st.subheader("6️⃣ Products by Category")
     st.image('assets/images/products_by_category.png', use_container_width =True)
     st.dataframe(customers_insights['Products_by_Category'], use_container_width=True)
 
