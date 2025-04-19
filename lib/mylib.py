@@ -216,25 +216,36 @@ def sort_results():
 
 
 
-def recommend_personalized_by_search(query, products_df, vectorizer, tfidf_matrix, user_recs, top_n=10):
-    # Search for products based on the query
+def recommend_personalized_by_search(query, products_df, vectorizer, tfidf_matrix, user_recs, user_id, top_n=10):
+    # 1. Tìm sản phẩm theo query
     search_results = recommend_products_by_search(query, products_df, vectorizer, tfidf_matrix, top_n=50)
-
     if search_results.empty:
         return pd.DataFrame()
 
-    # Filter personalized recommendations
-    user_rec_ids = set(user_recs['product_id']) if 'product_id' in user_recs.columns else set()
+    # 2. Lọc các đề xuất của user hiện tại
+    user_recs = user_recs[user_recs['user_id'] == user_id]
 
-    # Add a tag column: if it's in the personalized recommendations, label as 'Liked', otherwise ''
+    # 3. Tạo dict từ user_recs để tra nhanh
+    user_scores = dict(zip(user_recs['product_id'], user_recs['EstimateScore']))
+
+    # 4. Gắn tag 'Liked' nếu nằm trong đề xuất cá nhân của user hiện tại
     search_results['tag'] = search_results['product_id'].apply(
-        lambda x: "Liked" if x in user_rec_ids else ""
+        lambda x: "Liked" if x in user_scores else ""
     )
 
-    # Sort: prioritize 'Liked' products at the top
-    search_results = search_results.sort_values(by='tag', ascending=False)
+    # 5. Thêm EstimateScore nếu có
+    search_results['EstimateScore'] = search_results['product_id'].apply(
+        lambda x: user_scores.get(x, None)
+    )
+
+    # 6. Sắp xếp ưu tiên sản phẩm "Liked" trước
+    search_results = search_results.sort_values(
+        by=['tag', 'EstimateScore'], ascending=[False, False]
+    )
 
     return search_results.head(top_n)
+
+
 
 def render_selected_product(products_df, placeholder_image, product_id, tfidf_matrix):
     product = products_df[products_df['product_id'].astype(str) == str(product_id)].squeeze()
@@ -408,8 +419,8 @@ def render_product_card_product(row, placeholder_image):
         with st.expander("📄 Mô tả chi tiết"):
             st.markdown(row.get('description', 'Không có mô tả'))
 
-def get_product_card_html(row, placeholder_image):
 
+def get_product_card_html(row, placeholder_image):
     image_path = row.get('image', '')
     if not image_path or str(image_path).strip().lower() in ['nan', 'none', 'null', '']:
         image_path = placeholder_image
@@ -424,15 +435,19 @@ def get_product_card_html(row, placeholder_image):
         image_html = f'<img src="data:image/jpeg;base64,{base64_img}" class="product-image" />'
 
     product_title = row.get('product_name', 'Tên sản phẩm không xác định')
+    similarity = row.get('similarity', None)
+    estimate_score = row.get('EstimateScore', None)
     product_id = row.get('product_id', 'N/A')
     category = row.get('sub_category', 'Không rõ')
     price = row.get('price', 0)
     rating = float(row.get('rating', 0))
     description = row.get('description', 'Không có mô tả.')
     star_html = '⭐' * int(round(rating))
-
-    # create product card
     desc_id = f"desc_{product_id}"
+
+    # Chỉ hiển thị nếu similarity hoặc estimate_score hợp lệ (> 0 và không phải NaN)
+    similarity_html = f"<p><b>Similarity:</b> {round(similarity, 2)}</p>" if similarity and similarity > 0 else ""
+    estimate_html = f"<p><b>EstimateScore:</b> {round(estimate_score, 2)}</p>" if estimate_score and estimate_score > 0 else ""
 
     return f"""
     <div class="product-card">
@@ -442,6 +457,8 @@ def get_product_card_html(row, placeholder_image):
             <h4>{product_title}</h4>
             <button onclick="toggleDescription('{desc_id}')" class="toggle-btn">Hiện / Ẩn mô tả</button>
             <p id="{desc_id}" class="description" style="display:none;">{description}</p>
+            {similarity_html}
+            {estimate_html}
             <p><b>ID:</b> {product_id}</p>
             <p><b>Category:</b> {category}</p>
             <p><b>Rating:</b> {star_html} ({rating:.1f}/5)</p>
@@ -449,6 +466,7 @@ def get_product_card_html(row, placeholder_image):
         </div>
     </div>
     """
+
 
 # Display recommended products
 def render_recommended_products_ralated(related_products, placeholder_image):
@@ -557,30 +575,103 @@ def render_recommended_products_for_user(recommendation_products, placeholder_im
             st.markdown(f"<div style='font-weight: bold; color: #64B149;'>{label}</div>", unsafe_allow_html=True)
             render_product_card_product(row, placeholder_image)
 
-def recommend_personalized_related_products(product_id, products_df, tfidf_matrix, user_recs, top_n=6):
+# def recommend_personalized_related_products(product_id, products_df, tfidf_matrix, user_recs, top_n=6):
+#     # Get similar products
+#     content_similar = get_similar_products(product_id, products_df, tfidf_matrix, top_n=50)
+
+#     if content_similar.empty:
+#         return pd.DataFrame()
+
+#     # Make personalized recommendations
+#     user_rec_ids = set(user_recs['product_id'])
+
+#     # Copy the DataFrame
+#     content_similar = content_similar.copy()
+
+#     # Add a column to indicate if the product is in the personalized recommendations
+#     content_similar['is_user_rec'] = content_similar['product_id'].apply(lambda x: x in user_rec_ids)
+
+#     # Add a tag column
+#     content_similar['tag'] = content_similar['is_user_rec'].apply(lambda x: "Yêu thích" if x else "")
+
+#     # Sort by is_user_rec
+#     content_similar = content_similar.sort_values(by='is_user_rec', ascending=False)
+
+#     # Return top_n
+#     return content_similar.head(top_n).drop(columns=['is_user_rec'])
+
+# def recommend_personalized_related_products(product_id, products_df, tfidf_matrix, user_recs, top_n=6):
+#     # Get similar products
+#     content_similar = get_similar_products(product_id, products_df, tfidf_matrix, top_n=50)
+
+#     if content_similar.empty:
+#         return pd.DataFrame()
+
+#     # Make personalized recommendations
+#     user_rec_ids = set(user_recs['product_id'])
+
+#     # Copy the DataFrame
+#     content_similar = content_similar.copy()
+
+#     # Add a column to indicate if the product is in the personalized recommendations
+#     content_similar['is_user_rec'] = content_similar['product_id'].apply(lambda x: x in user_rec_ids)
+
+#     # Add a tag column
+#     content_similar['tag'] = content_similar['is_user_rec'].apply(lambda x: "Yêu thích" if x else "")
+
+#     # Merge thêm Estimated Score
+#     if 'product_id' in user_recs.columns and 'EstimateScore' in user_recs.columns:
+#         content_similar = content_similar.merge(
+#             user_recs[['product_id', 'EstimateScore']],
+#             on='product_id',
+#             how='left'
+#         )
+#     else:
+#         content_similar['EstimateScore'] = None
+
+#     # Sort by is_user_rec trước, sau đó đến est_score nếu có
+#     content_similar = content_similar.sort_values(by=['is_user_rec', 'EstimateScore'], ascending=[False, False])
+
+#     # Return top_n (drop cột is_user_rec nếu không cần thiết)
+#     return content_similar.head(top_n).drop(columns=['is_user_rec'])
+
+def recommend_personalized_related_products(product_id, products_df, tfidf_matrix, user_recs, user_id, top_n=6):
     # Get similar products
     content_similar = get_similar_products(product_id, products_df, tfidf_matrix, top_n=50)
 
     if content_similar.empty:
         return pd.DataFrame()
 
-    # Make personalized recommendations
-    user_rec_ids = set(user_recs['product_id'])
+    # Lọc user_recs theo user_id
+    user_recs_user = user_recs[user_recs['user_id'] == user_id]
 
-    # Copy the DataFrame
+    # Tập ID sản phẩm đã được gợi ý cho user này
+    user_rec_ids = set(user_recs_user['product_id'])
+
+    # Copy lại để tránh sửa gốc
     content_similar = content_similar.copy()
 
-    # Add a column to indicate if the product is in the personalized recommendations
+    # Gắn cột đánh dấu
     content_similar['is_user_rec'] = content_similar['product_id'].apply(lambda x: x in user_rec_ids)
 
-    # Add a tag column
+    # Gắn tag "Yêu thích"
     content_similar['tag'] = content_similar['is_user_rec'].apply(lambda x: "Yêu thích" if x else "")
 
-    # Sort by is_user_rec
-    content_similar = content_similar.sort_values(by='is_user_rec', ascending=False)
+    # Gộp thêm điểm dự đoán cá nhân hóa nếu có
+    if 'product_id' in user_recs_user.columns and 'EstimateScore' in user_recs_user.columns:
+        content_similar = content_similar.merge(
+            user_recs_user[['product_id', 'EstimateScore']],
+            on='product_id',
+            how='left'
+        )
+    else:
+        content_similar['EstimateScore'] = None
 
-    # Return top_n
+    # Sắp xếp: ưu tiên sản phẩm cá nhân hóa và có điểm cao
+    content_similar = content_similar.sort_values(by=['is_user_rec', 'EstimateScore'], ascending=[False, False])
+
     return content_similar.head(top_n).drop(columns=['is_user_rec'])
+
 
 # Render detail product
 def render_detail_product(product, placeholder_image):
@@ -672,10 +763,17 @@ def get_similar_products(product_id, products_df, tfidf_matrix, top_n=10):
     filtered_scores = [(i, cosine_scores[i]) for i in same_category_indices if i != idx]
     filtered_scores.sort(key=lambda x: x[1], reverse=True)
 
-    # Get top N similar indices
-    top_indices = [i for i, score in filtered_scores[:top_n]]
+    # Get top N similar indices and scores
+    top_pairs = filtered_scores[:top_n]
+    top_indices = [i for i, _ in top_pairs]
+    top_scores = [score for _, score in top_pairs]
 
-    return products_df.loc[top_indices].copy()
+    # Lấy sản phẩm tương ứng và thêm cột similarity
+    result_df = products_df.loc[top_indices].copy()
+    result_df['similarity'] = top_scores
+
+    return result_df
+
 
 def get_recommendations_for_user(user_id, ratings_df, model, top_n=10):
     if user_id not in ratings_df['user_id'].unique():
@@ -721,3 +819,39 @@ def show_selected_product(products_df, product_id, placeholder_image, tfidf_matr
 
 def recommend_related_products(product_id, products_df, tfidf_matrix, top_n=6):
     return get_similar_products(int(product_id), products_df, tfidf_matrix, top_n=top_n)
+
+def display_product_overview(products_df):
+
+    # Tính toán các giá trị từ DataFrame sản phẩm
+    total_products = len(products_df)
+    avg_rating = products_df['rating'].mean()
+    min_price = products_df['price'].min()
+    avg_price = products_df['price'].mean()
+    max_price = products_df['price'].max()
+    top_category = products_df['sub_category'].mode().iloc[0] if not products_df['category'].mode().empty else "N/A"
+
+    # Hiển thị các thông tin tổng quan
+    st.subheader("Summary")
+
+    col1, col2, col3 = st.columns(3)
+    col1.metric("📦 Total", f"{total_products:,}")
+    col2.metric("⭐ Avg. rating", f"{avg_rating:.2f}")
+    col3.metric("💰 Avg. Price", f"{avg_price:,.0f} VND")
+
+    col4, col5, col6 = st.columns(3)
+    col4.metric("⬇️ Lowest Price", f"{min_price:,.0f} VND")
+    col5.metric("⬆️ Highest Price", f"{max_price:,.0f} VND")
+    col6.metric("🏷️ Sub categoris", top_category)
+
+
+def get_rated_products_details(user_id, ratings_df, products_df):
+    """
+    Lấy danh sách sản phẩm người dùng đã đánh giá và trả về bảng chi tiết sản phẩm.
+    """
+    # Lọc danh sách product_id mà user đã đánh giá
+    rated_product_ids = ratings_df[ratings_df['user_id'] == user_id]['product_id'].unique()
+
+    # Lọc chi tiết sản phẩm từ products_df
+    rated_products_details = products_df[products_df['product_id'].isin(rated_product_ids)]
+
+    return rated_products_details

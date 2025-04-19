@@ -37,7 +37,7 @@ def sidebar_controls(products_df):
         }
 
 # Recommend app
-def recommend_app(products_df, recommendations_df, user_ids, vectorizer, tfidf_matrix):
+def recommend_app(products_df, ratings_df, recommendations_df, user_ids, vectorizer, tfidf_matrix):
     render_header()
 
     # ========== SIDEBAR ==========
@@ -63,6 +63,16 @@ def recommend_app(products_df, recommendations_df, user_ids, vectorizer, tfidf_m
     if user_id:
         user_name = recommendations_df.loc[recommendations_df['user_id'] == user_id, 'user'].iloc[0]
         st.success(f"Xin chào {user_name}!")
+        # Hiển thị sản phẩm đã đánh giá cho người dùng
+        with st.expander(f"Xem sản phẩm người dùng **{user_name}** đã đã mua"):
+            rated_products = get_rated_products_details(user_id, ratings_df, products_df)
+
+            if not rated_products.empty:
+                st.subheader(f"🛒 Sản phẩm người dùng **{user_name}** đã mua")
+                st.dataframe(rated_products[['product_name', 'price', 'sub_category']])
+            else:
+                st.info(f"Người dùng **{user_id}** chưa đánh giá sản phẩm nào.")
+
 
         if submitted and search_query:
             st.markdown("## 🔄 Gợi ý theo tìm kiếm (Hybrid)")
@@ -73,8 +83,12 @@ def recommend_app(products_df, recommendations_df, user_ids, vectorizer, tfidf_m
                 """,
                 unsafe_allow_html=True
             )
-            results = recommend_personalized_by_search(search_query, products_df, vectorizer, tfidf_matrix, recommendations_df)
+            results = recommend_personalized_by_search(search_query, products_df, vectorizer, tfidf_matrix, recommendations_df, user_id=user_id)
             if not results.empty:
+                # summary product
+                with st.expander("📊 Xem thống kê"):
+                    if not results.empty:
+                        display_product_overview(results)
                 render_scrollable_products_html(results, placeholder_image)
             else:
                 st.warning("Không tìm thấy sản phẩm phù hợp.")
@@ -90,13 +104,21 @@ def recommend_app(products_df, recommendations_df, user_ids, vectorizer, tfidf_m
                 st.markdown("### 🔄 Sản phẩm tương tự (Hybrid)")
                 st.caption("📝 Gợi ý sản phẩm tương tự với sản phẩm đang xem và hành vi người dùng")
                 
-                results = recommend_personalized_related_products(selected_product_id, products_df, tfidf_matrix, recommendations_df)
+                results = recommend_personalized_related_products(selected_product_id, products_df, tfidf_matrix, recommendations_df, user_id)
+                # summary product
+                with st.expander("📊 Xem thống kê"):
+                    if not results.empty:
+                        display_product_overview(results)
                 render_scrollable_products_html (results, placeholder_image)
 
         else:
             st.markdown("## 🔄 Gợi ý sản phẩm (Collaborative Filtering)")
             st.caption("📝 Gợi ý các sản phẩm yêu thích chung chung dựa trên cá nhân hóa")
             user_recs = recommendations_df[recommendations_df['user_id'] == user_id].merge(products_df, on='product_id', how='left').dropna().head(6)
+            # summary product
+            with st.expander("📊 Xem thống kê"):
+                if not user_recs.empty:
+                    display_product_overview(user_recs)
             render_scrollable_products_html(user_recs, placeholder_image)
     else:
         if submitted and search_query:
@@ -110,8 +132,12 @@ def recommend_app(products_df, recommendations_df, user_ids, vectorizer, tfidf_m
             )
             results = recommend_products_by_search(search_query, products_df, vectorizer, tfidf_matrix)
             if not results.empty:
+
+                # summary product
+                with st.expander("📊 Xem thống kê"):
+                    if not results.empty:
+                        display_product_overview(results)
                 render_scrollable_products_html(results, placeholder_image)
-                # thêm sort result nếu có
             else:
                 st.warning("Không tìm thấy sản phẩm phù hợp.")
         
@@ -122,12 +148,23 @@ def recommend_app(products_df, recommendations_df, user_ids, vectorizer, tfidf_m
                 st.markdown("### 🛍️ Sản phẩm đang xem")
                 show_selected_product(products_df, selected_product_id, placeholder_image, tfidf_matrix)
                 results = recommend_related_products(selected_product_id, products_df, tfidf_matrix)
+
             with right_col:
                 st.markdown("## 🔄 Gợi ý sản phẩm (Content-Based Filtering)")
                 st.caption("📝 Gợi ý sản phẩm dựa trên nội dung tương tự với sản phẩm đang xem")
+                
+                # summary product
+                with st.expander("📊 Xem thống kê"):
+                    if not results.empty:
+                        display_product_overview(results)
                 render_scrollable_products_html(results, placeholder_image)
+                # Visualization
         else:
             st.markdown("## 🔥 Sản phẩm nổi bật")
             st.caption("📝 Vì bạn chưa **Đăng nhập**, shop gợi ý trước cho bạn một số sản phẩm phổ biến nhé!")
             top = products_df.sort_values("rating", ascending=False).head(6)
             render_scrollable_products_html(top, placeholder_image)
+            
+            
+
+

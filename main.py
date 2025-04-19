@@ -22,17 +22,18 @@ def load_resources():
     load_css("assets/css/style/header.css")
 
     products_df = load_csv_file("data/products_df.csv")
+    ratings_df = load_csv_file("data/ratings.csv")
     recommendations_df = load_csv_file("data/recommendations_by_user.csv")
     user_ids = list(recommendations_df['user_id'].unique())
     vectorizer = load_vectorizer()
     tfidf_matrix = load_tfidf_matrix()
 
-    return products_df, recommendations_df, user_ids, vectorizer, tfidf_matrix
+    return products_df, ratings_df, recommendations_df, user_ids, vectorizer, tfidf_matrix
 
 def main():
     with st.spinner("🔄 Vui lòng chờ một chút nhé..."):
-        global products_df, recommendations_df, user_ids, vectorizer, tfidf_matrix
-        products_df, recommendations_df, user_ids, vectorizer, tfidf_matrix = load_resources()
+        global products_df, ratings_df, recommendations_df, user_ids, vectorizer, tfidf_matrix
+        products_df, ratings_df, recommendations_df, user_ids, vectorizer, tfidf_matrix = load_resources()
 
     # ========== SIDEBAR ==========
     with st.sidebar:
@@ -51,7 +52,7 @@ def main():
         
     # ========== MAIN CONTENT ==========
     if selected == "🏠 Demo Recommended App":
-        recommend_app(products_df, recommendations_df, user_ids, vectorizer, tfidf_matrix)
+        recommend_app(products_df, ratings_df, recommendations_df, user_ids, vectorizer, tfidf_matrix)
     elif selected == "📖 Project Overview":
         Project_Overview()
     elif selected == "📊 Dataset":
